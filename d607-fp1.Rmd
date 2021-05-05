@@ -14,7 +14,7 @@ library(tidyverse)
 `
 ```{r fix_annual_temp_test}
 
-ann_temp_raw <- read.csv("annual_temp_raw.csv")
+ann_temp_raw <- read.csv("https://raw.githubusercontent.com/tagensingh/DATA607-Final-Project/main/annual_temp_raw.csv")
 
 #glimpse(ann_temp)
 
@@ -29,7 +29,7 @@ ann_temp_change <-ann_temp_raw %>%
 
 
 
-write.csv(ann_temp_change,"./ann_temp_change.csv", row.names = FALSE)
+#write.csv(ann_temp_change,"./ann_temp_change.csv", row.names = FALSE)
 
 
 
@@ -42,12 +42,15 @@ ann_avg <-ann_temp_change %>%
 
 ggplot(data=ann_avg, aes(x=year, y=temp_change, group=1)) +
   geom_line()+
-  geom_smooth(method ="lm")
+  geom_smooth(method ="lm")+
+  ggtitle("Average Global Surface Temp Change 1961 - 2019") 
+  
+  
 
 
-ggplot(subset(ann_avg, year %in% c("1961-1969")), aes(x = year, y = temp_change))+
-  geom_line()+
-  geom_point()
+#ggplot(subset(ann_avg, year %in% c("1961-1969")), aes(x = year, y = temp_change))+
+#  geom_line()+
+#  geom_point()
 
 
 
