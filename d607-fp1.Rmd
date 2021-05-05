@@ -1,0 +1,56 @@
+---
+title: "data607-fp1"
+author: "Tage N Singh"
+date: "5/4/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+
+```
+`
+```{r fix_annual_temp_test}
+
+ann_temp_raw <- read.csv("annual_temp_raw.csv")
+
+#glimpse(ann_temp)
+
+ann_temp_change <-ann_temp_raw %>%
+        pivot_longer(
+        cols = starts_with("Y"),
+        names_to = "year",
+        names_prefix = "Y",
+        values_to = "temp_change",
+        values_drop_na = TRUE
+ )
+
+
+
+write.csv(ann_temp_change,"./ann_temp_change.csv", row.names = FALSE)
+
+
+
+```
+```{r compute}
+
+ann_avg <-ann_temp_change %>%
+                  group_by(year) %>%
+                  summarise_at(vars(temp_change), funs(mean(., na.rm=TRUE)))
+
+ggplot(data=ann_avg, aes(x=year, y=temp_change, group=1)) +
+  geom_line()+
+  geom_smooth(method ="lm")
+
+
+ggplot(subset(ann_avg, year %in% c("1961-1969")), aes(x = year, y = temp_change))+
+  geom_line()+
+  geom_point()
+
+
+
+```
+
+

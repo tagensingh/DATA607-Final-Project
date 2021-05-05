@@ -1,0 +1,14 @@
+https://www.kaggle.com/sevgisarac/temperature-change
+
+https://www.kaggle.com/edqian/twitter-climate-change-sentiment-dataset
+
+https://www.kaggle.com/joseguzman/climate-sentiment-in-twitter
+
+https://www.kaggle.com/bouweceunen/climate-fever-dataset
+
+According to NASA, Water Vapour, Carbon dioxide(CO₂), Methane, Nitrous oxide, Chlorofluorocarbons(CFCs) 
+
+
+Each variable must have its own column.
+Each observation must have its own row.
+Each value must have its own cell.
