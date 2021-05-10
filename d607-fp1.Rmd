@@ -48,5 +48,18 @@ ggplot(data=ann_avg, aes(x=year, y=temp_change, group=1)) +
 
 ```{r co2_emmissions}
 
+co2_emit_raw <- read.csv("https://raw.githubusercontent.com/tagensingh/DATA607-Final-Project/main/co2_emissions.csv")
+
+
+co2_avg <-co2_emit_raw %>%
+                  group_by(year)
+
+
+
+
+
+#co2_emit <- data.frame(co2_emit)
+
+
 ```
 
