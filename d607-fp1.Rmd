@@ -12,7 +12,7 @@ library(tidyverse)
 
 ```
 `
-```{r fix_annual_temp_test}
+```{r fix_annual_temp_change}
 
 ann_temp_raw <- read.csv("https://raw.githubusercontent.com/tagensingh/DATA607-Final-Project/main/annual_temp_raw.csv")
 
@@ -28,10 +28,7 @@ ann_temp_change <-ann_temp_raw %>%
  )
 
 
-
 #write.csv(ann_temp_change,"./ann_temp_change.csv", row.names = FALSE)
-
-
 
 ```
 ```{r compute}
@@ -47,13 +44,9 @@ ggplot(data=ann_avg, aes(x=year, y=temp_change, group=1)) +
   
   
 
-
-#ggplot(subset(ann_avg, year %in% c("1961-1969")), aes(x = year, y = temp_change))+
-#  geom_line()+
-#  geom_point()
-
-
-
 ```
 
+```{r co2_emmissions}
+
+```
 
