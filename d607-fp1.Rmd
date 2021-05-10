@@ -9,6 +9,10 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
+library(wordcloud2)
+library(httr)
+library(jsonlite)
+library(gtrendsR)
 
 ```
 `
@@ -46,19 +50,105 @@ ggplot(data=ann_avg, aes(x=year, y=temp_change, group=1)) +
 
 ```
 
+```{r compute_by area}
+
+area_avg <-ann_temp_change %>%
+                  group_by(Area) %>%
+                  summarise_at(vars(temp_change), funs(mean(., na.rm=TRUE)))
+
+# some of the countries included n the study
+
+wordcloud2(data = area_avg)
+wordcloud2(data = ann_avg)
+
+
+```
+
+
+
+
 ```{r co2_emmissions}
 
 co2_emit_raw <- read.csv("https://raw.githubusercontent.com/tagensingh/DATA607-Final-Project/main/co2_emissions.csv")
 
+co2_emit_raw$co2_population <- co2_emit_raw$co2_population/1000
 
 co2_avg <-co2_emit_raw %>%
-                  group_by(year)
+                  group_by(year)%>%
+                  summarise_at(vars(co2,co2_coal_per_capita,co2_oil_per_capita,co2_per_capita,co2_per_gdp), funs(mean(., na.rm=TRUE)))
+
+ggplot(data=co2_avg, aes(x=year, y=co2, group=1)) +
+  geom_line()+
+  geom_smooth(method ="lm")+
+  ggtitle("Average Global CO2 emissions 1961 - 2019")
+
+
+ggplot(data=co2_avg, aes(x=year, y=co2_per_capita, group=1)) +
+  geom_line()+
+  geom_smooth(method ="lm")+
+  ggtitle("Average Global CO2 Per Capita 1961 - 2019")
+
+ggplot(data=co2_avg, aes(x=year, y=co2_per_gdp, group=1)) +
+  geom_line()+
+  geom_smooth(method ="lm")+
+  ggtitle("Average Global CO2 Per GDP 1961 - 2019")
+
+ggplot(data=co2_avg, aes(x=year, y=co2_coal_per_capita, group=1)) +
+  geom_line()+
+  geom_smooth(method ="lm")+
+  ggtitle("Average Global CO2  COAL Per CAPITA 1961 - 2019")
+
+
+ggplot(co2_avg, aes(x=year)) + 
+  geom_line(aes(y = co2_coal_per_capita), color = "darkred") + 
+  geom_line(aes(y = co2_oil_per_capita), color="steelblue", linetype="twodash")+
+  ggtitle("Average Global CO2  COAL and OIL  Per CAPITA 1961 - 2019")
+
+
+```
+```{r correlations}
+
+corr_co2_temp <- lm(ann_avg$temp_change ~ co2_avg$co2)
+
+print(summary(corr_co2_temp))
+
+### - Use R-squared to discuss correltaion for co2 emmissions and surface temp
+
+```
+```{r api_loc_gov}
 
 
 
 
+loc_1 <- GET("https:/www.loc.gov/collections/384?fo=json")
 
-#co2_emit <- data.frame(co2_emit)
+loc_2 <- GET("https://www.congress.gov/bill/93rd-congress/house-concurrent-resolution/384")
+
+## Look for status 200
+
+http_status(loc_1)
+
+#content(loc_2, "text")
+
+```
+```{r google_trends_climate}
+
+res <- gtrends(c("climate", "greenhouse", "ozone layer"))
+
+iot <- res$interest_over_time
+
+iot2020 <- iot %>% 
+  filter(date > as.Date("2020-01-01"))
+
+iot2020 %>% 
+  ggplot() + geom_line(aes(x = date,
+                           y = hits,
+                           color = keyword)) +
+  theme_minimal() +
+  labs(title = "Zoom vs Slack - in 2020",
+       subtitle = "Google Trends Report",
+       caption = "Courtesy: gtrendsR package")
+
 
 
 ```

@@ -8,6 +8,8 @@ https://www.kaggle.com/bouweceunen/climate-fever-dataset
 
 According to NASA, Water Vapour, Carbon dioxide(CO₂), Methane, Nitrous oxide, Chlorofluorocarbons(CFCs) 
 
+https://www.r-bloggers.com/2020/06/analyse-google-trends-search-data-in-r-using-gtrendsr/
+
 
 Each variable must have its own column.
 Each observation must have its own row.
